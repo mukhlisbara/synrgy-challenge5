@@ -1,0 +1,17 @@
+<!-- Modal -->
+<div class="modal fade" id="modal_validation" tabindex="-1" aria-labelledby="modal_validation" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+        <input type="text" id="auth_type" hidden>
+        <div class="modal-body text-center d-flex flex-column align-items-center">
+            <img src="/public/assets/images/validation-check.png" width="250">
+            <h5 class="text=bold"><%= title_modal %></h5>
+            <p><%= message_modal %></p>
+            <div class="w-100 d-flex gap-1 px-5">
+                <button type="button" class="button-cancel w-100" data-bs-dismiss="modal">Tidak</button>
+                <button type="button" class="button-add w-100" id="confirm_button">Ya</button>
+            </div>
+        </div>
+    </div>
+    </div>
+</div>

@@ -1,0 +1,21 @@
+<sidebar>
+    <div class="d-flex flex-column fixed-top align-items-center" style="height: 100vh; width: 70px; background-color: #0D28A6;">
+        <div style="width: 70px; height: 50px;" class="d-flex justify-content-center align-items-center">
+            <div class="box-logo" style="height: 34px; width: 34px; background-color: #CFD4ED;"></div>
+        </div>
+        <a href="/">
+            <div style="width: 70px; height: 70px; color: white;" class="d-flex flex-column align-items-center justify-content-center">
+                <button style="border: none; background-color: transparent;"><i class="fas fa-house-user" style="color: white;"></i></button>
+                <p style="font-size: 12px; margin: 0;">Dashboard</p>
+                <div class="<%= active_menu == 'Dashboard'? 'active-sidebar' : 'passive-sidebar' %>"></div>
+            </div>
+        </a>
+        <a href="/cars">
+            <div style="width: 70px; height: 70px; color: white;" class="d-flex flex-column align-items-center justify-content-center">
+                <button style="border: none; background-color: transparent;"><i class="fas fa-truck" style="color: white;"></i></button>
+                <p style="font-size: 12px; margin: 0;">Cars</p>
+                <div class="<%= active_menu == 'Cars'? 'active-sidebar' : 'passive-sidebar' %>"></div>
+            </div>
+        </a>
+    </div> 
+</sidebar>

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/public/assets/styles/customStyle.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.0/css/bootstrap.min.css" integrity="sha512-NZ19NrT58XPK5sXqXnnvtf9T5kLXSzGQlVZL9taZWeTBtXoN3xIfTdxbkQh6QSoJfJgpojRqMfhyqBAAEeiXcA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" integrity="sha512-HK5fgLBL+xu6dm/Ii3z4xhlSUyZgTT9tuc/hSrtw6uzJOvgRr2a9jyxxT1ely+B+xFAmJKVSTbpM/CuL7qxO8w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title><%= title %></title>
+    <style>
+        a {
+            text-decoration: none;
+            color: black;
+        }
+
+        .breadcrumb {
+            font-size: 15px;
+            font-weight: 500;
+        }
+
+        .active-menu:hover {
+            color: rgb(139, 139, 139);
+        }
+    </style>
+</head>
+<body style="background-color: #F4F5F7;">
+    <%- include('layout/navbar.ejs', {menu_title: 'CARS', listMenu: ['List Car']}) %>
+    <%- include('layout/sidebar.ejs', { active_menu: "Cars"}) %>
+    
+    <main style="margin-left: 270px; margin-top: 50px;" class="p-3">
+        <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a>Cars</a></li>
+                <li class="breadcrumb-item active" aria-current="page">List Cars</li>
+            </ol>
+        </nav>
+
+        <div>
+            <div class="d-flex justify-content-between align-items-center">
+                <h4 class="text-bold">List Car</h4>
+                <a href="/cars/addcars"><button class="button-add" data-bs-toggle="modal" data-bs-target="#modal_create">+ Add New Car</button></a>
+            </div>
+
+            <% if (carList.length == 0) { %>
+                <div class="d-flex flex-column justify-content-center align-items-center mt-3" style="width: 100%;">
+                    <img src="/public/assets/images/empty-data.png" width="500">
+                    <h5>Data masih kosong nih, yuk isikan data lebih dulu</h5>
+                </div>
+            <% } else { %>
+                <div class="grid-content mt-3">
+                <% carList.forEach((car) => { %>       
+                    <div class="card">
+                        <img src="<%= car.carImage %>">
+                        <div class="card-body">
+                            <p class="card-text"><%= car.carName %> ( <%= car.carSize %> )</p>
+                            <h5 class="card-title text-bold">Rp <%= car.rentPrice %> / Hari</h5>
+                            <p>Start Rent - Finish Rent</p>
+                            <p>Updated at <%= car.newUpdatedAt %></p>
+                            <div class="d-flex gap-3 mt-3">
+                                <button class="btn btn-outline-danger" id="delete_button" style="width: 100%;" onclick="show_modal_delete('<%= car.id %>')"><i class="fas fa-trash-alt"></i> Hapus</button>
+                                <button class="button-edit" onclick="getDetailCars('<%= car.id %>')"><i class="fas fa-edit"></i> Edit</button>
+                            </div>
+                        </div>
+                    </div>
+                <% }) %>
+                </div>
+            <% } %>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="modal_delete" tabindex="-1" aria-labelledby="modal_update" aria-hidden="true">
+            <div class="modal-dialog">
+            <div class="modal-content">
+                <input type="text" id="car_id" hidden>
+                <div class="modal-body text-center d-flex flex-column align-items-center">
+                    <img src="/public/assets/images/img-BeepBeep.png" width="250">
+                    <h5 class="text=bold">Menghapus Data Mobil</h5>
+                    <p>Setelah dihapus data mobil tidak bisa dikembalikan. Yakin ingin menghapus?</p>
+                    <div class="w-100 d-flex gap-1 px-5">
+                        <button type="button" class="button-cancel w-100" data-bs-dismiss="modal">Tidak</button>
+                        <button type="button" class="button-add w-100" onclick="delete_cars()">Ya</button>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.0/js/bootstrap.bundle.min.js" integrity="sha512-Tkt/sYlAym9X81DPqqbCjU6bMl9HmsehhtxjnZu0K1TN9Ygu8h2D7jZbn59lbDNbbIG7DUukGkjKJbp/wDpKGg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script>
+        let emailUser = window.localStorage.getItem("email")
+        $('#email_user').text(emailUser)
+
+        function getDetailCars (id) {
+           window.location.href = `/api/cars/${id}`
+        }
+
+        function show_modal_delete (id) {
+            $('#car_id').val(id)
+            $('#modal_delete').modal('show')
+        }
+
+        function delete_cars () {
+            let id = $('#car_id').val()
+
+            $.ajax({
+                method: 'delete',
+                url: `api/cars/${id}`,
+                success: function (res) {
+
+                    window.location.href='/cars'
+                },
+            })
+        }
+        
+        // $('#update_form').submit(function (event) {
+        //     let id = $('#update_car_id').val()
+        //     $('#update_form').attr('action', `/api/cars/${id}`)
+        // })
+
+    </script>
+</body>
+</html>

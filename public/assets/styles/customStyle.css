@@ -1,0 +1,85 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.text-bold {
+    font-weight: 700;
+    margin: 0;
+}
+
+.active-sidebar, .pasive-sidebar {
+    height: 70px; 
+    width: 70px; 
+    position: absolute; 
+    background-color: white; 
+    opacity: 0.3;
+}
+
+.pasive-sidebar {
+    visibility: collapse;
+}
+
+.button-add {
+    background-color: #0D28A6;
+    color: white;
+
+    padding-block: 5px;
+    padding-inline: 10px;
+
+    border: none;
+    border-radius: 5px;
+}
+
+.button-cancel {
+    background-color: white;
+    color: #0D28A6;
+
+    padding-block: 5px;
+    padding-inline: 10px;
+
+    border: 1px solid #0D28A6;
+    border-radius: 5px;
+}
+
+.button-cancel:hover {
+    background-color: #cad2f8;
+}
+
+.button-edit {
+    background-color: #5CB85F;
+    color: white;
+
+    padding-block: 8px;
+    width: 100%;
+
+    border: none;
+    border-radius: 5px;
+}
+
+.grid-content {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    gap: 10px;
+}
+
+.card img {
+    height: 300px;
+    width: auto;
+    object-fit: cover;
+}
+
+.card-body p{
+    margin: 0;
+}
+
+#modal_delete {
+    color: black;
+    font-size: 17px;
+    font-weight: 400;
+}
+
+#modal_delete button{
+    font-size: 20px;
+    font-weight: 400;
+}

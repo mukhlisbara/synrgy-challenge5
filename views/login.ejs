@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('authenticate/header_auth.ejs') %>
+</head>
+<body>
+    <div class="d-flex layout">
+        <div class="cover-image">
+            <img src="/public/assets/images/cover.png" alt="Binar Cars">
+        </div>
+        <div class="form-auth">
+            <div class="box-logo"></div>
+            <h3>Welcome, Admin BCR</h3>
+            <!-- <form action="api/login" enctype="multipart/form-data" method="post">
+                <div class="mb-3">
+                    <label class="form-label">Car Name</label>
+                    <input type="text" class="form-control" id="update_carName" name="carName">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Rent Price</label>
+                    <input type="number" class="form-control" id="update_rentPrice" name="rentPrice">
+                </div>
+                <button type="submit" class="button-login">Sign In</button>
+                <hr>
+                <p class="text-center register">Don't have account yet? <a href="/register">Register</a></p></a>
+            </form> -->
+            <form action="api/login" enctype="application/x-www-form-urlencoded" method="post">
+                <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">Email</label>
+                    <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp" placeholder="Contoh: johndee@gmail.com">
+                </div>
+                <div class="mb-3">
+                    <label for="exampleInputPassword1" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Min. 6 Character">
+                </div>
+                <button type="submit" class="button-login">Sign In</button>
+                <hr>
+                <p class="text-center register">Don't have account yet? <a href="/register">Register</a></p></a>
+            </form>
+        </div>
+    </div>
+
+    <%- include('authenticate/footer_auth.ejs') %>
+</body>
+</html>

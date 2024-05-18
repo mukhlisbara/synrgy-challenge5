@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/public/assets/styles/customStyle.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.0/css/bootstrap.min.css" integrity="sha512-NZ19NrT58XPK5sXqXnnvtf9T5kLXSzGQlVZL9taZWeTBtXoN3xIfTdxbkQh6QSoJfJgpojRqMfhyqBAAEeiXcA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" integrity="sha512-HK5fgLBL+xu6dm/Ii3z4xhlSUyZgTT9tuc/hSrtw6uzJOvgRr2a9jyxxT1ely+B+xFAmJKVSTbpM/CuL7qxO8w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title><%= title %></title>
+    <style>
+        a {
+            text-decoration: none;
+            color: black;
+        }
+
+        .breadcrumb {
+            font-size: 15px;
+            font-weight: 500;
+        }
+
+        .active-menu:hover {
+            color: rgb(139, 139, 139);
+        }
+    </style>
+</head>
+<body style="background-color: #F4F5F7;">
+    <%- include('layout/navbar.ejs', {menu_title: 'DASHBOARD', listMenu: ['Dashboard']}) %>
+    <%- include('layout/sidebar.ejs', { active_menu: "Dashboard"}) %>
+    
+    <main style="margin-left: 270px; margin-top: 50px;" class="p-3">
+        <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="">Dashboard</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
+            </ol>
+        </nav>
+
+        <table class="table table-striped align-middle">
+            <thead>
+                <tr>
+                    <th scope="col">No</th>
+                    <th scope="col">Image</th>
+                    <th scope="col">Car Name</th>
+                    <th scope="col">Type</th>
+                    <th scope="col">Rent Price</th>
+                    <th scope="col">Created At</th>
+                    <th scope="col">Updated At</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% carList.forEach((car, index) => { %>
+                    <tr>
+                        <td><%= index+1 %></th>
+                        <td><img src="<%= car.carImage %>" alt="" width="200"></th>
+                        <td><%= car.carName %></td>
+                        <td><%= car.carSize %></td>
+                        <td><%= car.rentPrice %></td>
+                        <td><%= car.newCreatedAt %></td>
+                        <td><%= car.newUpdatedAt %></td>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+    </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.0/js/bootstrap.bundle.min.js" integrity="sha512-Tkt/sYlAym9X81DPqqbCjU6bMl9HmsehhtxjnZu0K1TN9Ygu8h2D7jZbn59lbDNbbIG7DUukGkjKJbp/wDpKGg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script>
+        localStorage.setItem('email', '<%= user.email %>')
+        $('#email_user').text('<%= user.email%>')
+
+        function getCars (id) {
+            $.ajax({
+                method: 'get',
+                url: `/api/cars/${id}`,
+                success: function(data) {
+                    $('#update_car_id').val(id);
+                    $('#update_carName').val(data.carName);
+                    $('#update_carSize').val(data.carSize);
+                    $('#update_rentPrice').val(data.rentPrice);
+                    $('#modal_update').modal('show')
+                    $('#update_form').attr('action', `/api/cars/${id}`)
+                }
+            })
+        }
+
+        function delete_cars (id) {
+            $.ajax({
+                method: 'delete',
+                url: `api/cars/${id}`,
+                success: function (res) {
+                    window.location.href='/'
+                },
+            })
+        }
+        
+        $('#update_form').submit(function (event) {
+            let id = $('#update_car_id').val()
+            $('#update_form').attr('action', `/api/cars/${id}`)
+        })
+
+    </script>
+</body>
+</html>

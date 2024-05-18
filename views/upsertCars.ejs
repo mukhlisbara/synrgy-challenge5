@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/public/assets/styles/customStyle.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.0/css/bootstrap.min.css" integrity="sha512-NZ19NrT58XPK5sXqXnnvtf9T5kLXSzGQlVZL9taZWeTBtXoN3xIfTdxbkQh6QSoJfJgpojRqMfhyqBAAEeiXcA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" integrity="sha512-HK5fgLBL+xu6dm/Ii3z4xhlSUyZgTT9tuc/hSrtw6uzJOvgRr2a9jyxxT1ely+B+xFAmJKVSTbpM/CuL7qxO8w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title><%= title %></title>
+    <style>
+        a {
+            text-decoration: none;
+            color: black;
+        }
+
+        .breadcrumb {
+            font-size: 15px;
+            font-weight: 500;
+        }
+
+        .active-menu:hover {
+            color: rgb(139, 139, 139);
+        }
+    </style>
+</head>
+<body style="background-color: #F4F5F7;">
+    <%- include('layout/navbar.ejs', {menu_title: 'CARS', listMenu: ['List Car']}) %>
+    <%- include('layout/sidebar.ejs', { active_menu: "Cars"}) %>
+    
+    <main style="margin-left: 270px; margin-top: 50px;" class="p-3">
+        <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a>Cars</a></li>
+                <li class="breadcrumb-item"><a href="/cars">List Cars</a></li>
+                <li class="breadcrumb-item active" aria-current="page"><%= breadcrumb_active_menu %></li>
+            </ol>
+        </nav>
+
+        <div class="d-flex justify-content-between align-items-center">
+            <h4 class="text-bold"><%= breadcrumb_active_menu %></h4>
+        </div>
+
+        <form id="upsert_form" enctype="multipart/form-data" method="post">
+            <div class="card mt-3">
+                <div class="card-body">
+                    <% if (car_id !== "none") { %>
+                        <input type="text" id="update_car_id" name="car_id" value="<%= car_id %>" hidden>
+                    <% } %>
+                    <div class="mb-3">
+                        <label class="form-label">Car Name</label>
+                        <input type="text" class="form-control" id="update_carName" name="carName">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Car Size</label>
+                        <select class="form-select" id="update_carSize" name="carSize" aria-label="Default select example">
+                            <option selected disabled>Choose size</option>
+                            <option value="Small">Small</option>
+                            <option value="Medium">Medium</option>
+                            <option value="Large">Large</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Rent Price</label>
+                        <input type="number" class="form-control" id="update_rentPrice" name="rentPrice">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Car Image</label>
+                        <input type="file" class="form-control" style="background-color: white;" id="update_carImage" name="carImage">
+                    </div>
+                </div>
+            </div>
+            <div class="position-absolute" style="bottom: 10px;">
+                <button type="button" class="button-cancel" onclick="history.back()">Cancel</button>
+                <% if (car_id === 'none') { %>
+                    <button type="submit" class="button-add">Save changes</button>
+                <% } else { %>
+                    <button type="submit" class="button-add">update Changes</button>
+                <% }  %>
+            </div>
+        </form>
+    </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.0/js/bootstrap.bundle.min.js" integrity="sha512-Tkt/sYlAym9X81DPqqbCjU6bMl9HmsehhtxjnZu0K1TN9Ygu8h2D7jZbn59lbDNbbIG7DUukGkjKJbp/wDpKGg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script>
+        let id
+        
+        let emailUser = window.localStorage.getItem("email")
+        $('#email_user').text(emailUser)
+        
+        if ($('#update_car_id').val() !== undefined) {
+            $('#update_carName').val('<%= data.carName %>');
+            $('#update_carSize').val('<%= data.carSize %>');
+            $('#update_rentPrice').val('<%= data.rentPrice %>');
+            id = $('#update_car_id').val()
+        }
+
+        function delete_cars (id) {
+            $.ajax({
+                method: 'delete',
+                url: `api/cars/${id}`,
+                success: function (res) {
+                    window.location.href='/'
+                },
+            })
+        }
+        
+        $('#upsert_form').submit(function (event) {
+            let id = $('#update_car_id').val()
+
+            if (id !== undefined) $('#upsert_form').attr('action', `/api/cars/${id}`)
+            else $('#upsert_form').attr('action', `/api/cars`)
+        })
+    </script>
+</body>
+</html>

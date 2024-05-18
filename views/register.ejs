@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('authenticate/header_auth.ejs') %>
+</head>
+<body>
+    <div class="d-flex layout">
+        <div class="cover-image">
+            <img src="/public/assets/images/cover.png" alt="Binar Cars">
+        </div>
+        <div class="form-auth">
+            <div class="box-logo"></div>
+            <h3>Register Admin Area</h3>
+            
+            <form id="form_register" enctype="application/x-www-form-urlencoded" action="/api/register" method="post">
+                <div class="mb-3">
+                    <label class="form-label">Username</label>
+                    <input type="text" class="form-control" id="username" name="username" placeholder="Input your name here">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Email</label>
+                    <input type="email" class="form-control" id="email" name="email" placeholder="username@domain">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Password</label>
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Min. 6 Character">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Confirm Password</label>
+                    <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="Min. 6 Character">
+                </div>
+                <button type="submit" class="button-login">Register</button>
+                <hr>
+                <p class="text-center register">already have an account <a href="/login">Sign In</a></p></a>
+            </form>
+        </div>
+
+        <%- include('authenticate/validation_modal', {title_modal: "Konfirmasi Registrasi", message_modal: "Pastikan semua data sudah benar?"}) %>
+    </div>
+    
+    <%- include('authenticate/footer_auth.ejs') %>
+
+    <script>
+        $('#form_register').on('submit', (e) => {
+            e.preventDefault()
+            $('#auth_type').val('register')
+            $('#modal_validation').modal('show')
+        })
+
+        $('#confirm_button').on('click', () => {
+           let auth_type = $('#auth_type').val()
+
+           if (auth_type == 'register') {
+             $('#form_register').unbind()
+             $('#form_register').submit()
+           }
+        })
+    </script>
+</body>
+</html>
